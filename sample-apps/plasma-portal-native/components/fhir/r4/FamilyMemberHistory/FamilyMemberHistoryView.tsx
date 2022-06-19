@@ -1,4 +1,4 @@
-import React from 'react';
+import { View, Text, StyleSheet } from "react-native";
 import { FamilyMemberHistory, FamilyMemberHistoryCondition, CodeableConcept } from "fhir/r4";
 import './FamilyMemberHistoryView.css';
 import CodeableConceptView, { CodeableConceptViewDisplayMode } from "../CodeableConcept/CodeableConceptView";
@@ -12,9 +12,9 @@ export const FamilyMemberHistoryView: React.FC<IFamilyMemberHistoryViewProps> = 
   let elRelationship = null;
   if (familyMemberHistory.relationship) {
     elRelationship = <CodeableConceptView codeableConcept={familyMemberHistory.relationship} 
-      style={{ display: "inline", textTransform: "capitalize" }}
+      style={{  textTransform: "capitalize" }}
       displayMode={CodeableConceptViewDisplayMode.inline} 
-    />
+    /> 
   }
   
   // Name...
@@ -46,13 +46,17 @@ export const FamilyMemberHistoryView: React.FC<IFamilyMemberHistoryViewProps> = 
   }
   
   return (
-    <div className="FamilyMemberHistoryView_container">
+    <div style={styles.FamilyMemberHistoryView_container}>
         Name: {elName}<br />
         Relationship: {elRelationship}<br />
         Sex: {elSex}<br />
-        <span className="font-bold">Conditions:</span>{elConditions}
+        <span style={{ fontWeight: "bold" }}>Conditions:</span>{elConditions}
     </div>
   );  
 };
+
+const styles = StyleSheet.create({
+  FamilyMemberHistoryView_container: { }
+});
 
 export default FamilyMemberHistoryView;

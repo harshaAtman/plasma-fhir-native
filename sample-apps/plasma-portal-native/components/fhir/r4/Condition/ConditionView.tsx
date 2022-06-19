@@ -1,36 +1,47 @@
-import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { Condition } from "fhir/r4";
 import { CodeableConceptView, DateView } from "..";
 
 export interface IConditionViewProps { condition?: Condition; }
 export const ConditionView: React.FC<IConditionViewProps> = (props) => {
-    if (!props.condition) { return <div />; }
-    if (!props.condition.code) { return <div />; }
-    if (!props.condition.code.coding) { return <div />; }
-    if (!props.condition.code.coding[0]) { return <div />; }
+    if (!props.condition) { return <View />; }
+    if (!props.condition.code) { return <View />; }
+    if (!props.condition.code.coding) { return <View />; }
+    if (!props.condition.code.coding[0]) { return <View />; }
 
     return (
-        <div className="ConditionView_container">
-            <div>
-                <div className="ConditionView_code">
+        <View style={styles.ConditionView_container}>
+            <View>
+                <View style={styles.ConditionView_code}>
                     <CodeableConceptView codeableConcept={props.condition.code} />
-                </div>
-                <div className="ConditionView_content">
-                    {!!props.condition.clinicalStatus ? <div className="ConditionView_clinicalStatus">
+                </View>
+                <View style={styles.ConditionView_content}>
+                    {!!props.condition.clinicalStatus ? <View style={styles.ConditionView_clinicalStatus}>
                         <CodeableConceptView codeableConcept={props.condition.clinicalStatus} />
-                    </div> : null}
+                    </View> : null}
 
-                    {!!props.condition.onsetDateTime ? <div className="ConditionView_onsetDate">
-                        Onset Date: <DateView date={props.condition.onsetDateTime} />
-                    </div> : null}
+                    {!!props.condition.onsetDateTime ? <View style={styles.ConditionView_onsetDate}>
+                        <Text>Onset Date: </Text>
+                        <DateView date={props.condition.onsetDateTime} />
+                    </View> : null}
 
-                    {!!props.condition.recordedDate ? <div className="ConditionView_recordedDate">
-                        Recorded Date: <DateView date={props.condition.recordedDate} />
-                    </div> : null}
-                </div>
-            </div>
-        </div>
+                    {!!props.condition.recordedDate ? <View style={styles.ConditionView_recordedDate}>
+                        <Text>Recorded Date: </Text>
+                        <DateView date={props.condition.recordedDate} />
+                    </View> : null}
+                </View>
+            </View>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    ConditionView_container: { },
+    ConditionView_code: { },
+    ConditionView_content: { },
+    ConditionView_clinicalStatus: { },
+    ConditionView_onsetDate: { },
+    ConditionView_recordedDate: { }
+});
 
 export default ConditionView;

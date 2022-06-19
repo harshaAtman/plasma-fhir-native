@@ -1891,6 +1891,11 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-picker/picker@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.4.1.tgz#92feb7e0672d739624517dae04bf4de1452dfcdc"
+  integrity sha512-1XWy3IQgwr7MWd30KdY1iUh2gQZD+JiotN1ifj/ptFUYKon/0UFwngKQaWCO/CP/FdLl20/huSSLwKedYrdMMA==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -2032,6 +2037,11 @@
   integrity sha512-kVzjari1s2YVi77D3w1yuvohV2idweYXMCDzqBiVNN63TcDWrIlTVOYpqVrvbbyOE/IyzBoTKF0fdnLPEORFxA==
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/fhir@^0.0.34":
+  version "0.0.34"
+  resolved "https://registry.yarnpkg.com/@types/fhir/-/fhir-0.0.34.tgz#cc0ea22772627a96ba35842df06a4e4afa0bf55c"
+  integrity sha512-8pCGwxYMKbxHzFmekh4HnhLvolDB+Tj61LT6yFkL+ERSFtbUvEdvcxMip52pd0vW4PLUyUk1otRvZq07HKCSzQ==
 
 "@types/graceful-fs@^4.1.2":
   version "4.1.5"
@@ -6672,6 +6682,14 @@ pkg-up@^3.1.0:
   integrity sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==
   dependencies:
     find-up "^3.0.0"
+
+plasma-fhir-app-utils@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/plasma-fhir-app-utils/-/plasma-fhir-app-utils-0.0.1.tgz#fc45913e632fe250521f87aeab2049d2a81c13d0"
+  integrity sha512-/YgkvtrbQZmwG6oSYSMvUHF5ZKYyWlIqFRHjOcKL8Ld4L4KHlSrkVEbkJppWBEi21z4v7V6RbCQu+FN/kcwTUg==
+  dependencies:
+    "@types/fhir" "^0.0.34"
+    fhirclient "^2.4.0"
 
 plasma-fhir-react-client-context@^0.0.1:
   version "0.0.1"

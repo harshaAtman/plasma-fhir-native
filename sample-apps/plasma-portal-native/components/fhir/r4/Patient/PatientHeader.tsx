@@ -1,4 +1,4 @@
-import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { Patient } from "fhir/r4";
 import { HumanNameView, AddressView } from "..";
 import SexAgeDOB from "./SexAgeDOB";
@@ -6,32 +6,39 @@ import SexAgeDOB from "./SexAgeDOB";
 export interface IPatientHeaderProps { patient?: Patient };
 export default function PatientHeader(props: IPatientHeaderProps) {
     // Check if data is available...
-    if (!props.patient) { return <div />; }
-    if (!props.patient.name) { return <div />; }
+    if (!props.patient) { return <View />; }
+    if (!props.patient.name) { return <View />; }
 
     return (
-        <div className="PatientHeader_container">
-            <div>
+        <View style={styles.PatientHeader_container}>
+            <View>
                 <HumanNameView humanName={props.patient.name[0]} />
 
-                <div className="PatientHeader_sexAgeDOB">
+                <View style={styles.PatientHeader_sexAgeDOB}>
                     <SexAgeDOB patient={props.patient} />
-                </div>
+                </View>
 
-                <div className="PatientHeader_patientId">
-                    <div>
-                        <label>{props.patient.id}</label>
-                    </div>
-                </div>
+                <View style={styles.PatientHeader_patientId}>
+                    <View>
+                        <Text>{props.patient.id}</Text>
+                    </View>
+                </View>
 
-                <div className="PatientHeader_address">
-                    <label>Address</label>
-                </div>
+                <View style={styles.PatientHeader_address}>
+                    <Text>Address</Text>
+                </View>
                 {props.patient.address?.map((addr, idx: number) => { 
                     return <AddressView key={`AddressView_${idx}`} address={addr} />; 
                 })}
 
-            </div>
-        </div>
+            </View>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    PatientHeader_container: { },
+    PatientHeader_sexAgeDOB: { },
+    PatientHeader_patientId: { },
+    PatientHeader_address: { }
+});

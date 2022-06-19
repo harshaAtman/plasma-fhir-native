@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 import { Range } from "fhir/r4";
 import { FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
 
@@ -16,9 +17,7 @@ const RangeInput: React.FC<IRangeInputProps> = (props: IRangeInputProps) => {
     const [rangeValue, setRangeValue] = useState<PlasmaFHIR.Range | undefined>(props.value);
     const [rangeText, setRangeText] = useState<string>((props.value) ? PlasmaFHIR.Range.toString(props.value) : "");
 
-    const onChange = useCallback((e) => {
-        const s = e.target.value;
-
+    const onChange = useCallback((s: string) => {
         // Try to parse the range. If we can, then update the value and reformat.
         // If we can't, erase the value and leave the format as-is.
         const range = PlasmaFHIR.Range.fromString(s);   // Can be undefined
@@ -34,12 +33,16 @@ const RangeInput: React.FC<IRangeInputProps> = (props: IRangeInputProps) => {
     }, [props.onChange, setRangeValue, setRangeText])
 
     return (
-        <input type="text" className="RangeInput" 
+        <TextInput style={styles.RangeInput}
             placeholder={props.placeholder ?? ""} 
             value={rangeText}
-            onChange={onChange}
+            onChangeText={onChange}
         />
     );
 }
+
+const styles = StyleSheet.create({
+    RangeInput: { }
+});
 
 export default RangeInput;

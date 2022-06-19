@@ -1,0 +1,1 @@
+export { default as AllergyIntoleranceView } from "./AllergyIntolerance/AllergyIntoleranceView";

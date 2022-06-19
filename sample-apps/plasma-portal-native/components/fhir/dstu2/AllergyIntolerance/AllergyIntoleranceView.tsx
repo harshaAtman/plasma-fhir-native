@@ -1,23 +1,23 @@
 import { View, Text, StyleSheet } from "react-native";
-import { AllergyIntolerance } from "fhir/r4";
-import { CodeableConceptView, DateView } from "..";
+import { AllergyIntolerance } from "fhir/r2";
 
 export interface IAllergyIntoleranceViewProps { allergyIntolerance?: AllergyIntolerance; }
 export const AllergyIntoleranceView: React.FC<IAllergyIntoleranceViewProps> = (props) => {
     if (!props.allergyIntolerance) { return <View />; }
-    if (!props.allergyIntolerance.code) { return <View />; }
-    if (!props.allergyIntolerance.code.coding) { return <View />; }
-    if (!props.allergyIntolerance.code.coding[0]) { return <View />; }
+    if (!props.allergyIntolerance.reaction) { return <View />; }
+
+    const recordedDate = (props.allergyIntolerance.recordedDate)
+        ? (new Date(props.allergyIntolerance.recordedDate)).toLocaleDateString()
+        : "Unknown";
 
     return (
         <View style={styles.AllergyIntoleranceView_container}>
             <View>
                 <View style={styles.AllergyIntoleranceView_code}>
-                    <CodeableConceptView codeableConcept={props.allergyIntolerance.code} />
+                    {props.allergyIntolerance.substance.text}
                 </View>
                 <Text style={styles.AllergyIntoleranceView_recordedDate}>
-                    <Text>Added: </Text>
-                    <DateView date={props.allergyIntolerance.recordedDate} />
+                    Added: {recordedDate}
                 </Text>
             </View>
         </View>

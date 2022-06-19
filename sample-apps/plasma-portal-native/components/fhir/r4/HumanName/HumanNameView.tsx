@@ -1,15 +1,15 @@
-import React from 'react';
+import { View, Text, StyleSheet } from "react-native";
 import { HumanName } from 'fhir/r4';
 
 export interface IHumanNameViewProps { humanName?: HumanName };
 export function HumanNameView(props: IHumanNameViewProps) {
     // Check if data is available...
-    if (!props.humanName) { return <div />; }
+    if (!props.humanName) { return <View />; }
 
     return (
-        <div className="HumanNameView_container">
-            <span className="HumanNameView_formattedName">{formatName(props.humanName)}</span>
-        </div>
+        <View style={styles.HumanNameView_container}>
+            <Text style={styles.HumanNameView_formattedName}>{formatName(props.humanName)}</Text>
+        </View>
     );
 }
 
@@ -30,5 +30,10 @@ function formatName(name?: HumanName): string {
     let sName = pieces.join(" ").trim();
     return sName;
 }
+
+const styles = StyleSheet.create({
+    HumanNameView_container: { },
+    HumanNameView_formattedName: { }
+});
 
 export default HumanNameView;

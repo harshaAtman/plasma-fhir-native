@@ -1,4 +1,4 @@
-import React from 'react';
+import { View, Text, StyleSheet, StyleProp, ViewStyle, TextStyle } from "react-native";
 import { Coding, CodeableConcept } from 'fhir/r4';
 import { CodingView } from "..";
 
@@ -10,7 +10,7 @@ export enum CodeableConceptViewDisplayMode {
 export interface ICodeableConceptViewProps { 
   codeableConcept?: CodeableConcept,
   displayMode?: CodeableConceptViewDisplayMode
-  style?: React.CSSProperties;
+  style?: StyleProp<ViewStyle | TextStyle>;
 };
 
 export default function CodeableConceptView(props: ICodeableConceptViewProps) {
@@ -18,8 +18,8 @@ export default function CodeableConceptView(props: ICodeableConceptViewProps) {
     const displayMode = props.displayMode ?? CodeableConceptViewDisplayMode.normal;
 
     // Check if data is available...
-    if (!props.codeableConcept) { return <div />; }
-    if (!props.codeableConcept.coding && !props.codeableConcept.text) { return <div />; }
+    if (!props.codeableConcept) { return <View />; }
+    if (!props.codeableConcept.coding && !props.codeableConcept.text) { return <View />; }
 
     const getCodings = (coding: Coding | Coding[]) => {
 
@@ -31,17 +31,17 @@ export default function CodeableConceptView(props: ICodeableConceptViewProps) {
           // For inline, we separate everything by a comma...
           if (displayMode === CodeableConceptViewDisplayMode.inline) {
             return (
-              <div key={idx} style={{ display: "inline" }} className="CodeableConceptView_codingElementContainer">
+              <View key={idx} style={styles.CodeableConceptView_codingElementContainer}>
                   <CodingView coding={coding} />
-                  {idx < array.length - 1 ? <span>, </span> : null}
-              </div>
+                  {idx < array.length - 1 ? <Text>, </Text> : null}
+              </View>
             );
           // For normal, everything is on a new line...
           } else {
             return (
-              <div key={idx} className="CodeableConceptView_codingElementContainer">
+              <View key={idx} style={styles.CodeableConceptView_codingElementContainer}>
                   <CodingView coding={coding} />
-              </div>
+              </View>
             );
           }
       });
@@ -51,24 +51,25 @@ export default function CodeableConceptView(props: ICodeableConceptViewProps) {
 
     const getText = (text: string) => {
       const isInlineMode = displayMode === CodeableConceptViewDisplayMode.inline;
-      const styles = {
-        display: isInlineMode ? 'inline' : 'unset'
-      }
-
       return (
-        <div style={styles} className="CodeableConceptView_codingElementContainer">
-            <span>{text}</span>
-        </div>
+        <View style={styles.CodeableConceptView_codingElementContainer}>
+            <Text>{text}</Text>
+        </View>
       );
     }
 
     let display = <></>;
-    if (props.codeableConcept.text) { display = <span>{getText(props.codeableConcept.text)}</span>; }
+    if (props.codeableConcept.text) { display = <Text>{getText(props.codeableConcept.text)}</Text>; }
     else if (props.codeableConcept.coding) { display = <>{getCodings(props.codeableConcept.coding)}</>; }
     
     return (
-        <div className="CodeableConceptView_container" style={props.style}>
+        <View style={[styles.CodeableConceptView_container, props.style]}>
             {display}
-        </div>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+  CodeableConceptView_codingElementContainer: { },
+  CodeableConceptView_container: { }
+});

@@ -1,14 +1,12 @@
-import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { Observation } from "fhir/r4";
 import { CodeableConceptView } from "..";
 import ObservationValueView from "./ObservationValueView";
 
 export interface IObservationComponentViewProps { observation?: Observation };
 export default function ObservationComponentView(props: IObservationComponentViewProps) {
-    console.log(props.observation);
-
     // Check if data is available...
-    if (!props.observation) { return <div />; }
+    if (!props.observation) { return <View />; }
 
     // If there is a "component" property, add those into elComponents...
     let elComponents: any = [];
@@ -18,14 +16,14 @@ export default function ObservationComponentView(props: IObservationComponentVie
     
             if (component.code) { 
                 return (
-                    <div key={key}>
+                    <View key={key}>
                         <CodeableConceptView codeableConcept={component.code} />
                         <ObservationValueView value={component} />
-                    </div>
+                    </View>
                 );
             }
             
-            return <div key={key}><ObservationValueView value={component} /></div>;
+            return <View key={key}><ObservationValueView value={component} /></View>;
         });
     }
 
@@ -39,10 +37,14 @@ export default function ObservationComponentView(props: IObservationComponentVie
     let elValue = <ObservationValueView value={props.observation} />;
 
     return (
-        <div className="ObservationComponentView_container">
+        <View style={styles.ObservationComponentView_container}>
             {elComponents}
             {elCode}
             {elValue}
-        </div>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    ObservationComponentView_container: { }
+});
