@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { fhirclient } from "fhirclient/lib/types";
+import { fhirclient } from "./../fhirclient-js/types";
+import Client from "./../fhirclient-js/Client";
 import { RootStackParamList } from '../types';
 import { FHIRClientLauncher } from "../components/FHIRClientLauncher";
 
 import config from "../constants/Config";
-import Client from "fhirclient/lib/Client";
 const DEFAULT_AUTH_PARAMS = config.EPIC_PATIENT_SANDBOX;
 
 export default function LaunchScreen({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'LaunchScreen'>) {
@@ -27,9 +27,7 @@ export default function LaunchScreen({ route, navigation }: NativeStackScreenPro
         <FHIRClientLauncher 
             authParams={authParams}
             defaultElement={defaultElement}
-            onAuthenticated={(client: Client | null) => {
-                navigation.navigate("TestScreen", { fhirClient: client });
-            }}
+            onAuthenticated={route.params.onAuthenticated}
         />
     );
 }

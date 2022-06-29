@@ -1,58 +1,13 @@
 import { useState } from "react";
 import * as AuthSession from "expo-auth-session";
-import * as smart from "fhirclient/lib/smart";
-import NodeAdapter from "fhirclient/lib/adapters/NodeAdapter";
-import { fhirclient } from "fhirclient/lib/types";
-import Client from "fhirclient/lib/Client";
-import FHIR from "fhirclient";
-
-/**
- * Suggestions for PR:
- * 
- * 1. smart.ts
-
-import { AbortController } from "abortcontroller-polyfill/dist/cjs-ponyfill";
-
-// Modified (getSecurityExtensions)
-export function getSecurityExtensions(env: fhirclient.Adapter, baseUrl = "/"): Promise<fhirclient.OAuthSecurityExtensions>
-{
-    const abortController = env.getAbortController();
-    return getSecurityExtensionsNoAdapter(baseUrl, abortController);
-}
-
-export function getSecurityExtensionsNoAdapter(baseUrl = "/", abortController = AbortController): Promise<fhirclient.OAuthSecurityExtensions>
-{
-    const abortController1 = new abortController();
-    const abortController2 = new abortController();
-
-    return any([{
-        controller: abortController1,
-        promise: getSecurityExtensionsFromWellKnownJson(baseUrl, {
-            signal: abortController1.signal
-        })
-    }, {
-        controller: abortController2,
-        promise: getSecurityExtensionsFromConformanceStatement(baseUrl, {
-            signal: abortController2.signal
-        })
-    }]);
-}
-
-
-
-- Don't use "fetch" for the token response -- try to use the actual library
-
-
- */
+import * as smart from "./../fhirclient-js/smart";
+import NodeAdapter from "./../fhirclient-js/adapters/NodeAdapter";
+import { fhirclient } from "./../fhirclient-js/types";
+import Client from "./../fhirclient-js/Client";
 
 // Get the endpoints from the given URL...
 const getEndpoints = async function(baseUrl: string): Promise<fhirclient.OAuthSecurityExtensions> {
-    // TODO: We are only using this for the AbortController
-    const fhirAdapter = new ReactNativeExpoAdapter();
-    return await smart.getSecurityExtensions(fhirAdapter, baseUrl);    
-    
-    // After changes...
-    // return await smart.getSecurityExtensionsNoAdapter(baseUrl);
+    return await smart.SmartUtil.getSecurityExtensions(baseUrl);
 }
 
 // Gets the authentication URL by appending all parameters to the query string...
@@ -69,11 +24,8 @@ const getAuthUrl = function(authEndpoint: string, clientId: string, redirectUrl:
 // Gets an access token using the authorization code...
 async function getAccessToken(tokenEndpoint: string, code: string, redirectUrl: string, clientId: string): Promise<AccessTokenRequestResponse> {
     // Use fhirclient function to build the token request options...
-    const requestOptions = smart.buildTokenRequest(new ReactNativeExpoAdapter(), code, {
-        redirectUri: redirectUrl,
-        tokenUri: tokenEndpoint,
-        clientId: clientId
-    } as any);
+    const btoa = (s: string) => { return global.Buffer.from(s).toString("base64"); }
+    const requestOptions = smart.SmartUtil.buildTokenRequest(btoa, code, redirectUrl, tokenEndpoint, clientId);
 
     return await fetch(tokenEndpoint, requestOptions)
         .then(x => x.json());
@@ -81,7 +33,17 @@ async function getAccessToken(tokenEndpoint: string, code: string, redirectUrl: 
 
 export default function useSmartOnFhirAuth() {
 
-    const authenticate = async function(clientId: string, redirectUrl: string, scope: string, state: string, baseUrl: string, audUrl: string): Promise<Client | null> {
+    interface IOnAuthenticate {
+        client: Client | null;
+        code: string;
+        clientId: string;
+        redirectUrl: string;
+        scope: string;
+        state: string;
+        accessToken: string;
+    }
+
+    const authenticate = async function(clientId: string, redirectUrl: string, scope: string, state: string, baseUrl: string, audUrl: string): Promise<IOnAuthenticate | null> {
 
         //
         // QUERY FOR "authentication_endpoint" AND "token_endpoint"...
@@ -89,6 +51,11 @@ export default function useSmartOnFhirAuth() {
         const endPoints = await getEndpoints(baseUrl);
         const authEndpoint = endPoints.authorizeUri;
         const tokenEndpoint = endPoints.tokenUri;
+
+        // TODO:
+        // Need to initialize and set "state" throughout the routine
+        //Object.assign(state, extensions);
+        //await storage.set(stateKey, state);
 
         //
         // CONSTRUCT THE AUTH URL
@@ -134,14 +101,41 @@ export default function useSmartOnFhirAuth() {
             tokenUri: tokenEndpoint,
             tokenResponse: tokenResponse,
         };
+
+
+        // TODO: REMOVE THIS
+        const client = new Client(env, clientState);
+        client.patient.read().then((patient) => {
+            //console.log(patient);
+            console.log("Got patient"); 
+        });
+
+        client.patient.request("Immunization").then((immunizations) => {
+            console.log("Got immunizations", immunizations);
+        });
+
+        client.request("Immunization?patient=" + client.patient.id).then((immunizations) => {
+            console.log("Got immunizations (good one)");
+        });
+
         
-        return new Client(env, clientState);
+        //return new Client(env, clientState);
+
+        return {
+            client: new Client(env, clientState),
+            code: authResult.params.code,
+            clientId: clientId,
+            redirectUrl: redirectUrl,
+            scope: scope,
+            state: state,
+            accessToken: tokenResponse.access_token,
+        }
     }
 
   return { authenticate };
 }
 
-class ReactNativeExpoAdapter extends NodeAdapter {
+export class ReactNativeExpoAdapter extends NodeAdapter {
     constructor() {
         super({ 
             request: null as any, 

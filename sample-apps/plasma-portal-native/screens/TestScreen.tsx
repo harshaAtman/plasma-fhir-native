@@ -8,7 +8,9 @@ export default function TestScreen({ route, navigation }: NativeStackScreenProps
     //const context = useContext(FHIRClientContext);  
     //console.log(context);
 
-    const { fhirClient } = route.params;
+    //const { fhirClient } = route.params;
+    const fhirClient = { patient: { id: "1" } };
+
 
     return (
         <View>

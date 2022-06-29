@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import * as AuthSession from 'expo-auth-session';
-import FHIR from "fhirclient";
-import { fhirclient } from "fhirclient/lib/types";
+import { oauth2 } from "fhirclient";
 import { useSmartOnFhirAuth } from '../hooks';
-import Client from "fhirclient/lib/Client";
+import { fhirclient } from "./../fhirclient-js/types";
+import Client from "./../fhirclient-js/Client";
+import { FHIRClientContext } from "./FHIRClientContext";
 
 //
 // Launches a FHIR app with oauth2.
@@ -12,11 +13,12 @@ import Client from "fhirclient/lib/Client";
 export interface IFHIRClientLauncherProps {
     authParams: fhirclient.AuthorizeParams;
     defaultElement: JSX.Element;
-    onAuthenticated: (client: Client | null) => void;
+    onAuthenticated: (client: Client | null, code: string, clientId: string, state: string, accessToken: string) => void;
 }
 
 export const FHIRClientLauncher: React.FC<IFHIRClientLauncherProps> = (props) => {
     const smartAuth = useSmartOnFhirAuth();
+    const fhirClientContext = useContext(FHIRClientContext);
 
     const clientId = props.authParams.clientId || "";
     const scope = "launch launch/patient patient.read patient.search observation.read observation.search";
@@ -25,34 +27,27 @@ export const FHIRClientLauncher: React.FC<IFHIRClientLauncherProps> = (props) =>
     const audUrl = "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4";
 
     useEffect(() => {
-        smartAuth.authenticate(clientId, AuthSession.getRedirectUrl(), scope, state, baseUrl, audUrl).then((client: Client | null) => {
-            // This should redirect or something I guess (?)
-            console.log("Authenticated");
-            console.log(client)
+        // If client is already initialized, just return...
+        if (fhirClientContext.client) { return; }
 
-            // QUERY FOR PATIENT DATA...
-            if (client && client.patient.id) {
-                client.patient.read().then((patientData: any) => {
-                    console.log("Patient Data", patientData);
-                });
-            }
+        // Otherwise, try to authenticate user...
+        smartAuth.authenticate(clientId, AuthSession.getRedirectUrl(), scope, state, baseUrl, audUrl).then((authData) => {
+            if (!authData) { return; }
 
+            const client = authData.client;
+            if (!client) { return; }
 
-            props.onAuthenticated(client);
+            // Initialize...
+            console.log("Initializing client...");
+            fhirClientContext.setClient(client);
+            if (client.getPatientId()) { fhirClientContext.setPatientId(client.getPatientId()); }
+            else if (client.patient && client.patient.id) { fhirClientContext.setPatientId(client.patient.id); }
+
+            // Notify that authentication occurred...
+            props.onAuthenticated(client, authData.code, authData.clientId, authData.state, authData.accessToken);
+        }).catch((error) => {
+            console.error(error);
         });
-
-
-        /*
-        const fhirClient = await smartAuth.authenticate(config.clientId, 
-            AuthSession.getRedirectUrl(),
-            "launch launch/patient patient.read patient.search observation.read observation.search",
-            "1234",
-            BASE_URL,
-            BASE_URL);
-        */
-
-
-        //FHIR.oauth2.authorize(props.authParams);
     });
 
     return props.defaultElement;

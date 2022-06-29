@@ -29,7 +29,8 @@ const linking: LinkingOptions<RootStackParamList> = {
       },
       Modal: 'modal',
       NotFound: '*',
-      LaunchScreen: "LaunchScreen"
+      LaunchScreen: "LaunchScreen",
+      AllergiesScreen: "AllergiesScreen",
     },
   },
 };

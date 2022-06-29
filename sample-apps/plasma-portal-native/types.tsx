@@ -6,7 +6,7 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import Client from 'fhirclient/lib/Client';
+import Client from "./fhirclient-js/Client";
 
 declare global {
   namespace ReactNavigation {
@@ -18,8 +18,17 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
-  LaunchScreen: { authParams?: any };
+  LaunchScreen: { authParams?: any, onAuthenticated: (client: any, code: string, clientId: string, state: string, accessToken: string) => void };
   TestScreen: { fhirClient: Client | null };
+  
+  AllergiesScreen: { };
+  ConditionsScreen: { };
+  EncountersScreen: { };
+  FamilyHistoryScreen: { };
+  ImmunizationsScreen: { };
+  LabsScreen: { };
+  PatientScreen: { };
+  VitalsScreen: { };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

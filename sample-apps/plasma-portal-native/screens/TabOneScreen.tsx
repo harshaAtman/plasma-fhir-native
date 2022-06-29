@@ -1,11 +1,18 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { StyleSheet, Button, ActivityIndicator, ScrollView } from 'react-native';
 import { Coding, Age, Period, Quantity, Ratio, Range } from "fhir/r4";
+import { FHIR } from "./../fhirclient-js/entry/browser";
+import NodeAdapter from './../fhirclient-js/adapters/NodeAdapter';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { useSmartOnFhirAuth } from '../hooks';
 import config from "../constants/Config";
 import { AddressView, AllergyIntoleranceView, AllergyIntoleranceReactionView, AnnotationView, CodingView, CodeableConceptView, CodingSelector, ConditionView, AgeView, DateView, HumanNameView, ImmunizationView, ObservationComponentView, ObservationValueView, PatientHeader, SexAgeDOB, PeriodView, QuantityView, RangeView, RangeInput, RatioView } from '../components/fhir/r4';
+import Client from "./../fhirclient-js/Client";
+import { aaaReady } from "./../fhirclient-js/smart";
+import { ReactNativeExpoAdapter } from "./../hooks/useSmartOnFhirAuth";
+import { FHIRClientContext } from '../components/FHIRClientContext';
+import BrowserAdapter from '../fhirclient-js/adapters/BrowserAdapter';
 
 
 const AUTH_PARAMS = config.EPIC_PATIENT_SANDBOX;
@@ -17,6 +24,8 @@ const r4test12471: fhir4.Immunization = {"resourceType":"Immunization","id":"his
 const r4test6135: fhir4.Condition = {"resourceType":"Condition","id":"f001","clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-clinical","code":"active"}]},"verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-ver-status","code":"confirmed"}]},"category":[{"coding":[{"system":"http://snomed.info/sct","code":"439401001","display":"diagnosis"}]}],"severity":{"coding":[{"system":"http://snomed.info/sct","code":"6736007","display":"Moderate"}]},"code":{"coding":[{"system":"http://snomed.info/sct","code":"368009","display":"Heart valve disorder"}]},"bodySite":[{"coding":[{"system":"http://snomed.info/sct","code":"40768004","display":"Left thorax"}],"text":"heart structure"}],"subject":{"reference":"Patient/f001","display":"P. van de Heuvel"},"encounter":{"reference":"Encounter/f001"},"onsetDateTime":"2011-08-05","recordedDate":"2011-10-05","asserter":{"reference":"Patient/f001","display":"P. van de Heuvel"},"evidence":[{"code":[{"coding":[{"system":"http://snomed.info/sct","code":"426396005","display":"Cardiac chest pain"}]}]}]};
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+  const fhirClientContext = useContext(FHIRClientContext);
+
   const [isLoading, setIsLoading] = useState(false);
   const [period, setPeriod] = useState<Period>({ start: "Today", end: "Tomorrow"});
   const [quantity, setQuantity] = useState<Quantity>({ value: 5, unit: 'kg' });
@@ -28,8 +37,67 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   ];
   //const smartAuth = useSmartOnFhirAuth();
 
+  const onAuthenticated = useCallback((client: Client | null, code: string, clientId: string, state: string, accessToken: string) => {
+
+    /*
+    console.log("app state");
+    console.log(appState.name);
+    appState.setName("B");
+
+
+    if (client) {
+      appState.setClient(client);
+      if (client.getPatientId()) { appState.setPatientId(client.getPatientId()); }
+      else if (client.patient && client.patient.id) { appState.setPatientId(client.patient.id); }
+    }
+    */
+
+    if (client) {
+
+      /*
+      console.log("NodeAdapter");
+      const nodeAdapter = new NodeAdapter({ request: null as any, response: null as any });
+      nodeAdapter.getSmartApi().ready().then(() => {    // This fails on having a null for request/response
+        console.log("SmartApi ready");
+      });
+      */
+
+      /* 
+      FHIR.oauth2.ready().then(() => {   // This fails on "Can't find variable: location"
+        console.log("ready!!!!");
+      });
+      /* */
+
+      console.log("aaaReady");
+      //const env = new ReactNativeExpoAdapter();
+      const env = new BrowserAdapter();
+      aaaReady(env, state, code, "", "", accessToken, (__nullClient: Client) => {
+        console.log("***aaaReady::Success");
+      }, (error: Error) => {
+        console.log("***aaaReady::Error", error);
+      });
+
+
+      fhirClientContext.setClient(client);
+      if (client.getPatientId()) { fhirClientContext.setPatientId(client.getPatientId()); }
+      else if (client.patient && client.patient.id) { fhirClientContext.setPatientId(client.patient.id); }
+    }
+
+
+    console.log("TabOneScreen::onAuthenticated");
+    navigation.goBack();
+
+    //console.log("Client...");
+    //console.log(fhirClientContext.client);
+    //fhirClientContext.setClient(client);
+
+
+
+    
+  }, [navigation]);
+
   const onLaunchClick = useCallback(() => {
-    navigation.navigate("LaunchScreen", { authParams: AUTH_PARAMS });
+    navigation.navigate("LaunchScreen", { authParams: AUTH_PARAMS, onAuthenticated });
   }, []);
 
   const onTestClick = useCallback(() => {
@@ -41,12 +109,11 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       <Text style={styles.title}>Tab One</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Button onPress={onLaunchClick} title="Launch" />
-
       <Button onPress={onTestClick} title="Test" />
+      <Button onPress={() => { navigation.navigate("AllergiesScreen", { fhirClient: null }); }} title="Allergies" />
 
       <View style={{paddingTop: 20}} />
       {isLoading && <ActivityIndicator size="large" />}
-
 
       {/* Components */}
       <Text style={{fontWeight: "bold" }}>components</Text>
@@ -63,7 +130,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       <CodingView coding={(r4test230.code && r4test230.code.coding) ? r4test230.code.coding[0] : undefined} />
       <Hr />
 
-      <CodingSelector codes={codes} onChange={() => { }} />
+      <CodingSelector codes={codes} selectedCode={codes[0]} onChange={() => { }} />
       <Hr />
 
       {/* TODO: Test inline and other modes, also styles */}
