@@ -46,15 +46,18 @@ export default function useSmartOnFhirAuth() {
         client: Client | null;
     }
 
-    const authenticate = async function(clientId?: string, redirectUrl?: string, scope?: string, state?: string, baseUrl?: string, audUrl?: string): Promise<IOnAuthenticate | null> {
+    const authenticate = async function(authParams: fhirclient.AuthorizeParams, redirectUrl: string, state?: string): Promise<IOnAuthenticate | null> {
 
         // Set some defaults...
-        if (!clientId) { clientId = ""; }
-        if (!redirectUrl) { redirectUrl = ""; }
-        if (!scope) { scope = ""; }
+        const clientId = authParams.clientId || "";
+        const scope = authParams.scope || "";
+        const serverUrl = String(authParams.iss || authParams.fhirServiceUrl || "");
+        const baseUrl = serverUrl;
+        const aud = serverUrl;
+        const fakeTokenResponse = authParams.fakeTokenResponse || "";
+        const patientId = authParams.patientId || "";
+        const encounterId = authParams.encounterId || "";
         if (!state) { state = ""; }
-        if (!baseUrl) { baseUrl = ""; }
-        if (!audUrl) { audUrl = ""; }
 
         //
         // QUERY FOR "authentication_endpoint" AND "token_endpoint"...
@@ -67,7 +70,7 @@ export default function useSmartOnFhirAuth() {
         // CONSTRUCT THE AUTH URL
         //
         //const expoRedirectUrl = AuthSession.getRedirectUrl();   //  "https://auth.expo.io/@username/{slug}";
-        const authUrl = getAuthUrl(authEndpoint, clientId, redirectUrl, audUrl, state, scope);
+        const authUrl = getAuthUrl(authEndpoint, clientId, redirectUrl, aud, state, scope);
 
         //
         // USE AuthSession TO AUTHENTICATE USER...
@@ -110,7 +113,16 @@ export default function useSmartOnFhirAuth() {
             tokenResponse: tokenResponse,
             completeInTarget: true        // This is needed to prevent crashes or a pending promise
         };
-        
+
+        // See smart.ts
+        // https://github.com/smart-on-fhir/client-js/blob/master/src/smart.ts
+        // fakeTokenResponse to override stuff (useful in development)
+        if (fakeTokenResponse && clientState.tokenResponse) { Object.assign(clientState.tokenResponse, fakeTokenResponse); }
+        // Fixed patientId (useful in development)
+        if (patientId && clientState.tokenResponse) { Object.assign(clientState.tokenResponse, { patient: patientId }); }
+        // Fixed encounterId (useful in development)
+        if (encounterId && clientState.tokenResponse){ Object.assign(clientState.tokenResponse, { encounter: encounterId }); }
+
         /**
          * NOTE:
          * We aren't calling the authorize() method because that's handled by AuthSession.

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { useTable, useSortBy, Column } from "react-table";
-import { FHIRr4 } from "plasma-fhir-react-components";
+//import { useTable, useSortBy, Column } from "react-table";
+//import { FHIRr4 } from "plasma-fhir-react-components";
 
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
 import { FHIRClientContext } from "plasma-fhir-react-client-context";

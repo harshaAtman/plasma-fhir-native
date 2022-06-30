@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
 import Client from 'fhirclient/lib/Client';
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
-import { FHIRClientContext } from "plasma-fhir-react-client-context";
+import { FHIRClientContext } from "../../components/plasma-fhir-react-native-client-context";
 import useDataLoadScreen from "./../../hooks/useDataLoadScreen";
 import { FHIRr4 } from "./../../components/plasma-fhir-react-native-components";
 
@@ -18,10 +18,8 @@ export default function ConditionsScreen() {
         getData: (fhirClient: Client) => FHIRClientHelper.getConditions(fhirClient, "problem-list-item")
     });
 
-    console.log(conditions);
-
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.header}>Conditions</Text>
 
             {/* Error Message */}
@@ -45,7 +43,7 @@ export default function ConditionsScreen() {
                 })
             }
             </View> : null}
-        </View>
+        </ScrollView>
     );
 }
 

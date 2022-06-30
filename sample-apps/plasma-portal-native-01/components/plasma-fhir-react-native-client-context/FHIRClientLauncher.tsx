@@ -26,12 +26,11 @@ export const FHIRClientLauncher: React.FC<IFHIRClientLauncherProps> = (props) =>
         if (fhirClientContext.client) { return; }
 
         // Get data necesary to perform the authentication...
-        const { clientId, scope, iss } = props.authParams;
         const state = props.state;
         const redirectUrl = AuthSession.getRedirectUrl();
 
         // Otherwise, try to authenticate user...
-        smartAuth.authenticate(clientId, redirectUrl, scope, state, iss, iss).then((authData) => {
+        smartAuth.authenticate(props.authParams, redirectUrl, state).then((authData) => {
             if (!authData || !authData.client) { 
                 props.onCancelOrError();
                 return; 

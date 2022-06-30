@@ -6,6 +6,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { FHIRClientContextWrapper } from './components/plasma-fhir-react-native-client-context';
+import { AppFooter } from './components';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -20,6 +21,7 @@ export default function App() {
           <Navigation colorScheme={colorScheme} />
         </FHIRClientContextWrapper>
         <StatusBar />
+        <AppFooter />
       </SafeAreaProvider>
     );
   }

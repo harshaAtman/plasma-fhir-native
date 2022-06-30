@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { FHIRr4 } from "plasma-fhir-react-components";
+//import { FHIRr4 } from "plasma-fhir-react-components";
 
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
 import { FHIRClientContext } from "plasma-fhir-react-client-context";
-import { useTable, useSortBy, Column, useRowState } from "react-table";
+//import { useTable, useSortBy, Column, useRowState } from "react-table";
 import useDataLoadScreen from "./../../hooks/useDataLoadScreen";
 
 const getVitalCategory = (vitalCode: PlasmaFHIR.CodeableConcept) => {

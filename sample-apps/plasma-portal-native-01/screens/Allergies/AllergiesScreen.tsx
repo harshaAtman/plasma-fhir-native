@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { Card } from "@rneui/base";
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
 import { FHIRClientContext } from "../../components/plasma-fhir-react-native-client-context";
 import { FHIRr4, FHIRdstu2 } from "./../../components/plasma-fhir-react-native-components";
@@ -27,7 +28,7 @@ export default function AllergiesScreen() {
     }, [setFhirVersion]);    
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.header}>
                 🤧 Allergies
             </Text>
@@ -48,14 +49,16 @@ export default function AllergiesScreen() {
                             {fhirVersion === 2 ? <FHIRdstu2.AllergyIntoleranceView allergyIntolerance={allergy as any} /> : null}
 
                             {fhirVersion === 4
-                                ? <View>
+                                ? <Card>
                                     <View>
                                         <FHIRr4.AllergyIntoleranceView allergyIntolerance={allergy} />
-                                        {allergy.reaction ? allergy.reaction.map((reaction, idx) => {
-                                            return <FHIRr4.AllergyIntoleranceReactionView reaction={reaction} />
+                                        {allergy.reaction ? allergy.reaction.map((reaction, idx2) => {
+                                            return <FHIRr4.AllergyIntoleranceReactionView key={`AllergyReaction_${idx}.${idx2}`}
+                                                reaction={reaction} 
+                                            />
                                         }) : null}                                        
                                     </View>
-                                </View>
+                                </Card>
                                 : null
                             }                            
                         </View>
@@ -63,7 +66,7 @@ export default function AllergiesScreen() {
                 })
             }
             </View> : null}
-        </View>
+        </ScrollView>
     );
 }
 

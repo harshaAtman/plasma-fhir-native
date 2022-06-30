@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
-import { useTable, useSortBy, Column } from "react-table";
-import { FHIRr4 } from "plasma-fhir-react-components";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
+//import { useTable, useSortBy, Column } from "react-table";
+//import { FHIRr4 } from "plasma-fhir-react-components";
 
 import { FHIRClientContext } from "plasma-fhir-react-client-context";
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
@@ -51,7 +52,7 @@ export default function FamilyHistoryScreen() {
     }, [sortCode]);
 
     return (
-        <div className="p-5">
+        <ScrollView style={{ padding: 5 }}>
             <h1 className="text-2xl font-bold pb-5">Family History</h1>
 
             {/* Error Message */}
@@ -65,7 +66,7 @@ export default function FamilyHistoryScreen() {
                 <Table columns={columns} data={data} />
                 : null
             }
-        </div>
+        </ScrollView>
     );
 }
 
@@ -127,3 +128,14 @@ function Table({ columns, data }: ITableProps) {
         </table>
     );
 }
+
+const styles = StyleSheet.create({
+    container: { padding: 5 },
+
+    header: { 
+        fontSize: 36, 
+        fontWeight: "bold", 
+        paddingVertical: 4, 
+        textAlign: "center"
+    },
+});

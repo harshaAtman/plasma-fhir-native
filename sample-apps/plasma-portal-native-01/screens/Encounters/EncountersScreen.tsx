@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
-import { FHIRClientContext } from "plasma-fhir-react-client-context";
+import { FHIRClientContext } from "../../components/plasma-fhir-react-native-client-context";
 import { FHIRr4 } from "./../../components/plasma-fhir-react-native-components";
 import useDataLoadScreen from "./../../hooks/useDataLoadScreen";
 
@@ -16,7 +16,7 @@ export default function EncountersScreen() {
     });
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.header}>Encounters</Text>
 
             {/* Error Message */}
@@ -41,7 +41,7 @@ export default function EncountersScreen() {
                 })
             }
             </View> : null}
-        </View>
+        </ScrollView>
     );
 }
 

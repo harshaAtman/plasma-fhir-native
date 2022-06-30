@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { FHIRr4 } from "plasma-fhir-react-components";
-
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { Card } from '@rneui/base';
+import { FHIRr4 } from '../../components/plasma-fhir-react-native-components';
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
-import { FHIRClientContext } from "plasma-fhir-react-client-context";
-import { Card } from "@mantine/core";
+import { FHIRClientContext } from "../../components/plasma-fhir-react-native-client-context";
 import useDataLoadScreen from "./../../hooks/useDataLoadScreen";
 
 export default function ImmunizationScreen() {
@@ -17,8 +17,8 @@ export default function ImmunizationScreen() {
     });
 
     return (
-        <div className="p-5">
-            <h1 className="text-2xl font-bold pb-5">Immunizations</h1>
+        <ScrollView style={styles.container}>
+            <Text style={styles.header}>Immunizations</Text>
 
             {/* Error Message */}
             {elErrorMessage}
@@ -28,17 +28,28 @@ export default function ImmunizationScreen() {
 
             {/* Immunizations */}
             {isDataLoaded && !hasErrorLoading ? 
-            <div className="g-4">
+            <View>
                 {
                     immunizationData.map((immunization, idx) => { 
                         return (
-                            <Card style={{ marginTop: "10px" }} key={`ImmunizationCard_${idx}`} shadow="sm" className="border">
+                            <Card containerStyle={{ marginTop: 10 }} key={`ImmunizationCard_${idx}`} shadow="sm" className="border">
                                 <FHIRr4.ImmunizationView immunization={immunization} />
                             </Card>
                         );
                     })
                 }
-            </div> : null}
-        </div>
+            </View> : null}
+        </ScrollView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: { padding: 5 },
+
+    header: { 
+        fontSize: 36, 
+        fontWeight: "bold", 
+        paddingVertical: 4, 
+        textAlign: "center"
+    },
+});

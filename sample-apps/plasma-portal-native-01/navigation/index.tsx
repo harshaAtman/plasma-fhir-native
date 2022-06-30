@@ -54,9 +54,16 @@ function MainNavigator() {
     <Drawer.Navigator initialRouteName="Test">
       <Stack.Screen name="LaunchScreen" component={Screens.LaunchScreen} />
       <Drawer.Screen name="Test" component={Screens.TestScreen} />
+      <Drawer.Screen name="Patient" component={Screens.PatientScreen} />
+      <Drawer.Screen name="Encounters" component={Screens.EncountersScreen} />
       <Drawer.Screen name="Allergies" component={Screens.AllergiesScreen} />
       <Drawer.Screen name="Conditions" component={Screens.ConditionsScreen} />
-      <Drawer.Screen name="Encounters" component={Screens.EncountersScreen} />
+      <Drawer.Screen name="FamilyHistory" component={Screens.FamilyHistoryScreen} />
+      <Drawer.Screen name="Immunizations" component={Screens.ImmunizationsScreen} />
+      {/*
+      <Drawer.Screen name="Labs" component={Screens.LabsScreen} />
+      <Drawer.Screen name="Vitals" component={Screens.VitalsScreen} />
+      */}
     </Drawer.Navigator>
   );
 }
