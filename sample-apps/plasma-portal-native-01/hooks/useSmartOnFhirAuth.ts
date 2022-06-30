@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React from "react";
 import * as AuthSession from "expo-auth-session";
 import * as smart from "fhirclient/lib/smart";
 import { fhirclient } from "fhirclient/lib/types";
 import Client from "fhirclient/lib/Client";
 import { ReactNativeExpoAdapter } from "./ReactNativeExpoAdapter";
+import { FHIRClientContext } from "../components/plasma-fhir-react-native-client-context";
 
 // Get the endpoints from the given URL...
 const getEndpoints = async function(baseUrl: string): Promise<fhirclient.OAuthSecurityExtensions> {
@@ -39,18 +40,21 @@ async function getAccessToken(tokenEndpoint: string, code: string, redirectUrl: 
 }
 
 export default function useSmartOnFhirAuth() {
+    const context = React.useContext(FHIRClientContext);
 
     interface IOnAuthenticate {
         client: Client | null;
-        code: string;
-        clientId: string;
-        redirectUrl: string;
-        scope: string;
-        state: string;
-        accessToken: string;
     }
 
-    const authenticate = async function(clientId: string, redirectUrl: string, scope: string, state: string, baseUrl: string, audUrl: string): Promise<IOnAuthenticate | null> {
+    const authenticate = async function(clientId?: string, redirectUrl?: string, scope?: string, state?: string, baseUrl?: string, audUrl?: string): Promise<IOnAuthenticate | null> {
+
+        // Set some defaults...
+        if (!clientId) { clientId = ""; }
+        if (!redirectUrl) { redirectUrl = ""; }
+        if (!scope) { scope = ""; }
+        if (!state) { state = ""; }
+        if (!baseUrl) { baseUrl = ""; }
+        if (!audUrl) { audUrl = ""; }
 
         //
         // QUERY FOR "authentication_endpoint" AND "token_endpoint"...
@@ -116,15 +120,7 @@ export default function useSmartOnFhirAuth() {
          const smart = env.getSmartApi();
          const client = await smart.ready();
 
-        return {
-            client: client,
-            code: authResult.params.code,
-            clientId: clientId,
-            redirectUrl: redirectUrl,
-            scope: scope,
-            state: state,
-            accessToken: tokenResponse.access_token,
-        }
+        return { client: client };
     }
 
   return { authenticate };

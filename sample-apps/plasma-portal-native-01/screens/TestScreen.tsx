@@ -11,24 +11,20 @@ const AUTH_PARAMS = config.EPIC_PATIENT_SANDBOX;
 
 export default function TestScreen({ route, navigation }: any) {
     const onLaunchClick = useCallback(() => {
-        navigation.navigate("LaunchScreen", { authParams: AUTH_PARAMS, onAuthenticated });
+        navigation.navigate("LaunchScreen", { 
+            authParams: AUTH_PARAMS, 
+            onAuthenticated, onCancelOrError
+        });
     }, []);
 
     const onAuthenticated = useCallback((client: Client | null) => {
         console.log("TestScreen::onAuthenticated Navigating to Allergies");
 
-        if(client) {
-            client.patient.read().then((patient) => {
-                console.log(patient);
-                console.log("Got patient"); 
-            });
-
-            client.request("Immunization?patient=" + client.patient.id).then((immunizations) => {
-                console.log("Got immunizations (good one)", immunizations);
-            });
-        }
-
         navigation.navigate("Allergies");
+    }, []);
+
+    const onCancelOrError = useCallback(() => {
+        navigation.navigate("Test");
     }, []);
 
     return (

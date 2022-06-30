@@ -2,7 +2,11 @@ import { fhirclient } from "fhirclient/lib/types";
 import Client from "fhirclient/lib/Client";
 import { ready, authorize, init } from "fhirclient/lib/smart";
 import { SMART_KEY } from "fhirclient/lib/settings";
-import { AbortController } from "fhirclient";
+
+class ReactNativeExpoAdapterAbortController {
+    signal: any;
+    abort() { }
+}
 
 export class ReactNativeExpoStorage implements fhirclient.Storage {
     private data: Map<string, any>;
@@ -81,7 +85,17 @@ export class ReactNativeExpoAdapter implements fhirclient.Adapter {
     }
 
     getAbortController(): { new(): AbortController; prototype: AbortController; } {
-        return AbortController;
+        // NOTE:
+        // We return an "AbortController" that doesn't actually abort.
+        // The reason is because for somen reason (I don't know why),
+        //    after we call getSecurityExtensions(), only one of the promises fulfills.
+        //    Then, the other promise just remains "Aborted".
+        // 
+        //    Then, when we try to call a patient.request, it tries to get the conformance
+        //    statement, but it fails because the promise was aborted.
+        //
+
+        return ReactNativeExpoAdapterAbortController;
     }
 
     getSmartApi(): fhirclient.SMART {

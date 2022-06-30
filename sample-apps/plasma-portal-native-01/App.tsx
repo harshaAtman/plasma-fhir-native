@@ -5,8 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
-import { FHIRClientContextWrapper } from './components/plasma-fhir-react-client-context';
-import { FHIRClientProvider } from './components/plasma-fhir-react-client-context/FHIRClientProvider';
+import { FHIRClientContextWrapper } from './components/plasma-fhir-react-native-client-context';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -17,9 +16,9 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-        <FHIRClientProvider>
+        <FHIRClientContextWrapper>
           <Navigation colorScheme={colorScheme} />
-        </FHIRClientProvider>
+        </FHIRClientContextWrapper>
         <StatusBar />
       </SafeAreaProvider>
     );

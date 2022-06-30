@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
-import { FHIRClientContext } from "plasma-fhir-react-client-context";
+import { FHIRClientContext } from "../../components/plasma-fhir-react-native-client-context";
 import { FHIRr4, FHIRdstu2 } from "./../../components/plasma-fhir-react-native-components";
 import useDataLoadScreen from "./../../hooks/useDataLoadScreen";
 
