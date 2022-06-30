@@ -1,9 +1,8 @@
 import React, { useEffect, useContext } from "react";
 import * as AuthSession from 'expo-auth-session';
-import { oauth2 } from "fhirclient";
 import useSmartOnFhirAuth from "../../hooks/useSmartOnFhirAuth";
-import { fhirclient } from "./../../fhirclient-js/types";
-import Client from "./../../fhirclient-js/Client";
+import { fhirclient } from "fhirclient/lib/types";
+import Client from "fhirclient/lib/Client";
 import { FHIRClientContext } from "./FHIRClientContext";
 
 //

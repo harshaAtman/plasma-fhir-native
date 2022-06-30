@@ -1,5 +1,5 @@
 import React from 'react';
-import Client from "./../fhirclient-js/Client";
+import Client from 'fhirclient/lib/Client';
 
 //
 // Manages the "fhirclient" instance.

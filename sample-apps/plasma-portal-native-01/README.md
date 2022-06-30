@@ -42,7 +42,3 @@ Gets rid of the navigation error, but doesn't let me launch the app
   - https://stackoverflow.com/questions/71816116/stack-navigator-cannot-be-used-as-a-jsx-component
 
 
-
-
-
-## Changes to fhirclient-js

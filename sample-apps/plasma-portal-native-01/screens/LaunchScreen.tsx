@@ -1,7 +1,6 @@
 import { View, Text } from "react-native";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { fhirclient } from "./../fhirclient-js/types";
-import Client from "./../fhirclient-js/Client";
+import { fhirclient } from "fhirclient/lib/types";
 //import { RootStackParamList } from '../types';
 import { FHIRClientLauncher } from "../components/plasma-fhir-react-client-context/FHIRClientLauncher";
 
