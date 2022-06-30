@@ -18,10 +18,7 @@ export interface IFHIRClientContext {
 // Define context...
 export const defaultContext: IFHIRClientContext = {
     client: null,
-    setClient(client: Client | null) { 
-        console.log("setting client", client);
-        this.client = client; 
-    },
+    setClient(client: Client | null) { this.client = client; },
 
     patientId: null,
     setPatientId(patientId: string) { this.patientId = patientId; }
