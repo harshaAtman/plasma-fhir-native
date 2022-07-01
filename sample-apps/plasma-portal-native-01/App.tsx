@@ -16,7 +16,19 @@ const myStyles = StyleSheet.create({
   PatientHeader_patientId: { },
   PatientHeader_patientIdText: { fontSize: 12 },
   PatientHeader_address: { },
-  PatientHeader_addressText: { paddingTop: 20, fontWeight: "bold" }
+  PatientHeader_addressText: { paddingTop: 20, fontWeight: "bold" },
+
+  SexAgeDOB_age: { },
+  SexAgeDOB_dob: { },
+  SexAgeDOB_gender: { textTransform: "capitalize" },
+  SexAgeDOB_container: { },
+
+  AllergyIntoleranceView_container: { },
+  AllergyIntoleranceView_code: { },
+  AllergyIntoleranceView_recordedDate: { },
+
+  CodeableConceptView_codingElementContainer: { },
+  CodeableConceptView_container: { }
 });
 
 export default function App() {

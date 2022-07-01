@@ -23,14 +23,14 @@ function PatientScreen(props: IPatientScreenProps) {
 
         // Read patient resource...
         fhirClient.patient.read().then((value: Patient) => {
-            console.log("patient", value);
+            //console.log("patient", value);
             setIsPatientDataLoaded(true);
             setPatientData(value);
         });
 
         // Load Observations::Smoking Status...
         FHIRClientHelper.getSmokingStatus(fhirClient).then((value: any) => {
-            console.log("Observations::SmokingStatus", value);
+            //console.log("Observations::SmokingStatus", value);
             if (!value) { return; }
         });
 

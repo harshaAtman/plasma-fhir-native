@@ -7,7 +7,19 @@ const DefaultTheme = StyleSheet.create({
     PatientHeader_patientId: { },
     PatientHeader_patientIdText: { color: "red" },
     PatientHeader_address: { },
-    PatientHeader_addressText: { }
+    PatientHeader_addressText: { },
+
+    SexAgeDOB_age: { },
+    SexAgeDOB_dob: { },
+    SexAgeDOB_gender: { },
+    SexAgeDOB_container: { },
+
+    AllergyIntoleranceView_container: { },
+    AllergyIntoleranceView_code: { },
+    AllergyIntoleranceView_recordedDate: { },
+
+    CodeableConceptView_codingElementContainer: { },
+    CodeableConceptView_container: { }
 });
 
 export const PlasmaThemeContext = React.createContext({

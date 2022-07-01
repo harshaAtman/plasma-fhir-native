@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet } from "react-native";
 import { CommonActions } from '@react-navigation/native';
 import { fhirclient } from "fhirclient/lib/types";
 import Client from "fhirclient/lib/Client";
@@ -31,7 +31,7 @@ export default function TestScreen({ route, navigation }: any) {
     }, []);
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
              {/* DEBUG CARD */}
              {mode === "LOCAL" && <TestLaunchCard 
                 onLaunch={onLaunch}
@@ -41,10 +41,10 @@ export default function TestScreen({ route, navigation }: any) {
                 authParams_ssmR4={config.EPIC_PATIENT_LIVE_R4}
                 authParams_cerner={config.CERNER_PATIENT_R4}
             />}
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { padding: 10 }
+    container: { padding: 10, paddingTop: 50 }
 });

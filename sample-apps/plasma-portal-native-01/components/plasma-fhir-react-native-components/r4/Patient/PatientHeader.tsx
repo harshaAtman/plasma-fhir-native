@@ -3,7 +3,6 @@ import { Patient } from "fhir/r4";
 import { HumanNameView } from "../HumanName/HumanNameView";
 import { AddressView } from "../Address/AddressView";
 import SexAgeDOB from "./SexAgeDOB";
-
 import { PlasmaThemeContext } from "../../theme";
 
 export interface IPatientHeaderProps { patient?: Patient };

@@ -39,7 +39,7 @@ export default function VitalsScreen() {
     }, []);
 
     const data = React.useMemo(() => {
-        console.log(vitalsData)
+        //console.log(vitalsData)
         const vitalsSortedByDateAndEncounter =  vitalsData.sort((a, b) => {
             const da = a.effectiveDateTime ? new Date(a.effectiveDateTime).getTime() : 0;
             const db = b.effectiveDateTime ? new Date(b.effectiveDateTime).getTime() : 0;
