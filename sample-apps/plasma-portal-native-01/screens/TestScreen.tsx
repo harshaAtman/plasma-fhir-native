@@ -1,34 +1,16 @@
-import { useContext, useCallback } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { useCallback } from "react";
+import { View, StyleSheet } from "react-native";
 import { CommonActions } from '@react-navigation/native';
 import { fhirclient } from "fhirclient/lib/types";
-
-//import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-//import { FHIRClientContext } from "plasma-fhir-react-client-context";
-//import { RootStackParamList } from '../types';
-
 import Client from "fhirclient/lib/Client";
-import config from "./../constants/Config";
-
 import { TestLaunchCard } from "../components";
-
-
-const AUTH_PARAMS = config.EPIC_PATIENT_SANDBOX;
+import config from "./../constants/Config";
 const mode = "LOCAL";
 
 export default function TestScreen({ route, navigation }: any) {
-    const onLaunchClick = useCallback(() => {
-        navigation.navigate("LaunchScreen", { 
-            authParams: AUTH_PARAMS, 
-            onAuthenticated, onCancelOrError
-        });
-    }, []);
 
+    // Once the user has authenticated, navigate to the "Main" navigator (which holds the patient screens)....
     const onAuthenticated = useCallback((client: Client | null) => {
-        console.log("TestScreen::onAuthenticated Navigating to Allergies");
-
-        //navigation.navigate("Main");
-
         navigation.dispatch(
             CommonActions.reset({
               index: 0,
@@ -38,9 +20,10 @@ export default function TestScreen({ route, navigation }: any) {
     }, []);
 
     const onCancelOrError = useCallback(() => {
-        navigation.navigate("Test");
+        navigation.navigate("Test");        // TODO: Update this
     }, []);
 
+    // Occurs when one of the launch buttons is pressed...
     const onLaunch = useCallback((authParams: fhirclient.AuthorizeParams) => {
         navigation.navigate("LaunchScreen", { 
             authParams, onAuthenticated, onCancelOrError 
@@ -49,9 +32,6 @@ export default function TestScreen({ route, navigation }: any) {
 
     return (
         <View style={styles.container}>
-            <Text>Test Screen</Text>
-            <Button onPress={onLaunchClick} title="Launch" />
-
              {/* DEBUG CARD */}
              {mode === "LOCAL" && <TestLaunchCard 
                 onLaunch={onLaunch}
@@ -61,7 +41,6 @@ export default function TestScreen({ route, navigation }: any) {
                 authParams_ssmR4={config.EPIC_PATIENT_LIVE_R4}
                 authParams_cerner={config.CERNER_PATIENT_R4}
             />}
-
         </View>
     );
 }
