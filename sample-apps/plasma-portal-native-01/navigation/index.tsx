@@ -9,7 +9,7 @@ import * as Screens from "./../screens";
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
-const isAuthenticated = true;
+const isAuthenticated = false;
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
     return (
@@ -18,10 +18,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       </NavigationContainer>
     );
 }
-
-
-
-
 
 function LoginScreen() {
   return (
@@ -41,9 +37,10 @@ function RegisterScreen() {
 
 function AuthNavigator() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Test" component={Screens.TestScreen} />
+      <Stack.Screen name="LaunchScreen" component={Screens.LaunchScreen} />
+      <Stack.Screen name="Main" component={MainNavigator} />
     </Stack.Navigator>
   );
 }
@@ -51,9 +48,7 @@ function AuthNavigator() {
 // https://stackoverflow.com/questions/67130651/reanimated-2-failed-to-create-a-worklet-maybe-you-forgot-to-add-reanimateds-ba
 function MainNavigator() {
   return (
-    <Drawer.Navigator initialRouteName="Test">
-      <Stack.Screen name="LaunchScreen" component={Screens.LaunchScreen} />
-      <Drawer.Screen name="Test" component={Screens.TestScreen} />
+    <Drawer.Navigator initialRouteName="Patient">
       <Drawer.Screen name="Patient" component={Screens.PatientScreen} />
       <Drawer.Screen name="Encounters" component={Screens.EncountersScreen} />
       <Drawer.Screen name="Allergies" component={Screens.AllergiesScreen} />

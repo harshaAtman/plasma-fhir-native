@@ -24,7 +24,7 @@ export default function LaunchScreen({ route, navigation }: NativeStackScreenPro
 
     // Element to show while authorization is getting ready...
     const defaultElement = (
-        <View>
+        <View style={{ paddingTop: 100, alignItems: "center" }}>
             <Text>Loading...</Text>
         </View>
     );

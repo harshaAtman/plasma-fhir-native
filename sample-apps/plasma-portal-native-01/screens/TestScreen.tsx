@@ -1,6 +1,8 @@
 import { useContext, useCallback } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
+import { CommonActions } from '@react-navigation/native';
 import { fhirclient } from "fhirclient/lib/types";
+
 //import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 //import { FHIRClientContext } from "plasma-fhir-react-client-context";
 //import { RootStackParamList } from '../types';
@@ -25,7 +27,14 @@ export default function TestScreen({ route, navigation }: any) {
     const onAuthenticated = useCallback((client: Client | null) => {
         console.log("TestScreen::onAuthenticated Navigating to Allergies");
 
-        navigation.navigate("Patient");
+        //navigation.navigate("Main");
+
+        navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [ { name: 'Main' } ],
+            })
+          );
     }, []);
 
     const onCancelOrError = useCallback(() => {
