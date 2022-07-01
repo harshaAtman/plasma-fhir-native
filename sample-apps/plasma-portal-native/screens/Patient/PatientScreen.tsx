@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { Card } from '@rneui/base';
-import { FHIRr4 } from '../../components/plasma-fhir-react-native-components';
+import { FHIRr4 } from '../../components/plasma-portal-components';
 import { FHIRClientContext } from "../../components/plasma-fhir-react-native-client-context";
 import { Patient } from 'fhir/r4';
 import { FHIRClientHelper } from "plasma-fhir-app-utils";

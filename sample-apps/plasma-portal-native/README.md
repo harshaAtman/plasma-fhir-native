@@ -1,5 +1,8 @@
 # plasma-portal-native
 
+## Run
+- `yarn ios`
+
 ## Setup
 - `expo init project-name`
   - Choose a blank TypeScript project
@@ -30,10 +33,14 @@
 - `expo r -c`
   - Press `i` to open in iOS
 
----
-- `yarn add plasma-fhir-react-client-context`
+## TODO:
+- [ ] Move `/components/plasma-fhir-react-native-client-context` to package
+- [ ] Move `/components/plasma-fhir-react-native-components` to package
+  - [ ] Start with styles from `/components/plasma-portal-components`
+  - [ ] Figure out a way to style/theme them in a flexible way
+- [ ] Move `/hooks/useSmartOnFhirAuth.ts` to package
 
-
+## Issues
 
 Gets rid of the navigation error, but doesn't let me launch the app
 - Update dependencies in `package.json` to be:

@@ -29,12 +29,20 @@ export default function EncountersScreen() {
             {/* TODO: Want a table, but using this for now */}
             {isDataLoaded && !hasErrorLoading ? 
             <View>
+                <View style={styles.row}>
+                    <Text style={{ fontWeight: "bold" }}>Date</Text>
+                    <Text style={{ fontWeight: "bold" }}>Type</Text>
+                    <Text style={{ fontWeight: "bold" }}>Reason</Text>
+                </View>
+
             {
                 encounters.map((encounter: PlasmaFHIR.Encounter, idx: number) => { 
                     return (
                         <View key={"EncounterView_" + idx.toString()}>
-                            <View>
-                                <FHIRr4.PeriodView period={encounter.period} />
+                            <View style={[styles.row, { backgroundColor: (idx%2==0) ? "#ECE9E8" : "white" }]}>
+                                {(encounter.period && encounter.period.start) ? <FHIRr4.DateView date={encounter.period.start} /> : <Text>{"Unknown"}</Text>}
+                                {(encounter.type && encounter.type.length > 0) ? <FHIRr4.CodeableConceptView codeableConcept={encounter.type[0]} /> : <Text>{"Unknown"}</Text>}
+                                {<Text>N/A</Text>}
                             </View>
                         </View>
                     );
@@ -46,7 +54,7 @@ export default function EncountersScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: { padding: 5 },
+    container: { padding: 0 },
     
     header: { 
         fontSize: 36, 
@@ -54,4 +62,12 @@ const styles = StyleSheet.create({
         paddingVertical: 4, 
         textAlign: "center"
     },
+
+    row: {
+        borderBottomColor: "gray", 
+        borderBottomWidth: 1, 
+        padding: 15,
+        flexDirection: "row",
+        justifyContent: "space-between"
+    }
 });

@@ -3,7 +3,7 @@ import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { Card } from "@rneui/base";
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
 import { FHIRClientContext } from "../../components/plasma-fhir-react-native-client-context";
-import { FHIRr4, FHIRdstu2 } from "./../../components/plasma-fhir-react-native-components";
+import { FHIRr4, FHIRdstu2 } from "./../../components/plasma-portal-components";
 import useDataLoadScreen from "./../../hooks/useDataLoadScreen";
 
 export default function AllergiesScreen() {
@@ -56,7 +56,7 @@ export default function AllergiesScreen() {
                                             return <FHIRr4.AllergyIntoleranceReactionView key={`AllergyReaction_${idx}.${idx2}`}
                                                 reaction={reaction} 
                                             />
-                                        }) : null}                                        
+                                        }) : null}
                                     </View>
                                 </Card>
                                 : null
@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
         fontSize: 36, 
         fontWeight: "bold", 
         paddingVertical: 4, 
-        textAlign: "center"
+        textAlign: "left"
     },
 });

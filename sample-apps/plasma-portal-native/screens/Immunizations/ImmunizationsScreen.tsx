@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { Card } from '@rneui/base';
-import { FHIRr4 } from '../../components/plasma-fhir-react-native-components';
+import { FHIRr4 } from '../../components/plasma-portal-components';
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
 import { FHIRClientContext } from "../../components/plasma-fhir-react-native-client-context";
 import useDataLoadScreen from "./../../hooks/useDataLoadScreen";
@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
         fontSize: 36, 
         fontWeight: "bold", 
         paddingVertical: 4, 
-        textAlign: "center"
+        textAlign: "left"
     },
 });

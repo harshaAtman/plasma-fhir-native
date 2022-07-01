@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { Card } from "@rneui/base";
 import Client from 'fhirclient/lib/Client';
 import { FHIRClientHelper, FHIRResourceHelpers as PlasmaFHIR } from "plasma-fhir-app-utils";
 import { FHIRClientContext } from "../../components/plasma-fhir-react-native-client-context";
 import useDataLoadScreen from "./../../hooks/useDataLoadScreen";
-import { FHIRr4 } from "./../../components/plasma-fhir-react-native-components";
+import { FHIRr4 } from "./../../components/plasma-portal-components";
 
 // TODO: For DSTU2, we don't want to pass in "problem-list-item". Don't pass in anything.
 
@@ -34,11 +35,11 @@ export default function ConditionsScreen() {
             {
                 conditions.map((condition: PlasmaFHIR.Condition, idx: number) => { 
                     return (
-                        <View key={"ConditionView_" + idx.toString()}>
+                        <Card key={"ConditionView_" + idx.toString()}>
                             <View>
                                 <FHIRr4.ConditionView condition={condition} />
                             </View>
-                        </View>
+                        </Card>
                     );
                 })
             }
@@ -54,6 +55,6 @@ const styles = StyleSheet.create({
         fontSize: 36, 
         fontWeight: "bold", 
         paddingVertical: 4, 
-        textAlign: "center"
+        textAlign: "left"
     },
 });
