@@ -18,7 +18,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 function AuthNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Test" component={Screens.TestScreen} />
+      <Stack.Screen name="LandingScreen" component={Screens.LandingScreen} />
       <Stack.Screen name="LaunchScreen" component={Screens.LaunchScreen} />
       <Stack.Screen name="Main" component={MainNavigator} />
     </Stack.Navigator>

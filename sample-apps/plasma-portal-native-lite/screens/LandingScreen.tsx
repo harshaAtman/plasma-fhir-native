@@ -5,7 +5,7 @@ import { fhirclient } from "fhirclient/lib/types";
 import Client from "fhirclient/lib/Client";
 import config from "../constants/Config";
 
-export default function TestScreen({ route, navigation }: any) {
+export default function LandingScreen({ route, navigation }: any) {
     // Once the user has authenticated, navigate to the "Main" navigator (which holds the patient screens)....
     const onAuthenticated = useCallback((client: Client | null) => {
         navigation.dispatch(

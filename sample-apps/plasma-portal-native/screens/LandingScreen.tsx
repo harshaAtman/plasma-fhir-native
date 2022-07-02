@@ -4,7 +4,7 @@ import { CommonActions } from '@react-navigation/native';
 import { fhirclient } from "fhirclient/lib/types";
 import Client from "fhirclient/lib/Client";
 import { TestLaunchCard, FHIRVersionSelector, HealthSystemSearch } from "../components";
-import config from "./../constants/Config";
+import config from "../constants/Config";
 
 // Epic endpoints...
 const endpointsDSTU2 = require("../assets/endpoints/Epic_DSTU2Endpoints.json");
@@ -14,7 +14,7 @@ const mode = "LOCAL";
 const appVersion = "20220701.001";
 
 
-export default function TestScreen({ route, navigation }: any) {
+export default function LandingScreen({ route, navigation }: any) {
     const [version, setVersion] = useState<"r4" | "dstu2">("r4");
     const endpoints = (version === "dstu2") ? endpointsDSTU2 : endpointsR4;
 
@@ -29,7 +29,7 @@ export default function TestScreen({ route, navigation }: any) {
     }, []);
 
     const onCancelOrError = useCallback(() => {
-        navigation.navigate("Test");        // TODO: Update this
+        navigation.navigate("LandingScreen");
     }, []);
 
     // Occurs when one of the launch buttons is pressed...
